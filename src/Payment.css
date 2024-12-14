@@ -1,0 +1,84 @@
+.Payment {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}
+
+.Payment h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.Payment form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.Payment label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.Payment input[type="text"] {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.Payment input[type="radio"] {
+    margin-right: 10px;
+}
+
+.Payment button {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%; 
+    margin-top: 20px;
+}
+
+.Payment button:hover {
+    background-color: #45a049;
+}
+
+.Payment .back-button {
+    margin-top: 20px;
+    background-color: #f44336; 
+}
+
+.Payment .back-button:hover {
+    background-color: #e53935;
+}
+
+.Payment .radio-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.Payment h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.Payment input[type="radio"] {
+    margin-left: 10px;
+}

@@ -1,24 +1,21 @@
 const express = require('express');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
-const bcrypt = require('bcrypt'); // For password hashing
+const bcrypt = require('bcrypt'); 
 
 const app = express();
 const PORT = 5001;
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Initialize Database
 const db = new sqlite3.Database('./database.db', (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
-    process.exit(1); // Exit if the database connection fails
+    process.exit(1); 
   } else {
     console.log('Connected to SQLite database.');
 
-    // Create Register Table for User Registration
     db.run(
       `CREATE TABLE IF NOT EXISTS register (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +28,6 @@ const db = new sqlite3.Database('./database.db', (err) => {
       }
     );
 
-    // Create Products Table if not exists
     db.run(
       `CREATE TABLE IF NOT EXISTS products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,26 +41,23 @@ const db = new sqlite3.Database('./database.db', (err) => {
   }
 });
 
-// API Endpoints
 
-// Register a new user
+
 app.post('/api/register', (req, res) => {
   console.log('Received POST request to /api/register');
   const { name, email, password } = req.body;
 
-  // Validate input
   if (!name || !email || !password) {
     return res.status(400).json({ message: 'Name, email, and password are required!' });
   }
 
-  // Hash the password before storing it
+
   bcrypt.hash(password, 10, (err, hashedPassword) => {
     if (err) {
       console.error(err.message);
       return res.status(500).json({ error: 'Failed to hash password.' });
     }
 
-    // Insert user into the register table
     const insert = 'INSERT INTO register (name, email, password) VALUES (?, ?, ?)';
     db.run(insert, [name, email, hashedPassword], function (err) {
       if (err) {
@@ -81,16 +74,16 @@ app.post('/api/register', (req, res) => {
   });
 });
 
-// Login a user
+
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
 
-  // Validate input
+ 
   if (!username || !password) {
     return res.status(400).json({ error: 'Username and password are required!' });
   }
 
-  // Fetch user from database
+ 
   const query = 'SELECT * FROM register WHERE name = ?';
   db.get(query, [username], (err, row) => {
     if (err) {
@@ -99,7 +92,7 @@ app.post('/api/login', (req, res) => {
     }
 
     if (row) {
-      // Compare hashed password with the stored one
+      
       bcrypt.compare(password, row.password, (err, result) => {
         if (err) {
           console.error('Error comparing passwords:', err);
@@ -118,7 +111,7 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-// GET request to retrieve all products
+
 app.get('/api/products', (req, res) => {
   const query = 'SELECT * FROM products';
 
@@ -128,16 +121,16 @@ app.get('/api/products', (req, res) => {
       return res.status(500).json({ error: 'Failed to fetch products.' });
     }
 
-    // Send the product list as a response
+    
     res.json(rows);
   });
 });
 
-// POST request to add a new product
+
 app.post('/api/products', (req, res) => {
   const { name, price } = req.body;
 
-  // Validate input
+  
   if (!name || !price) {
     return res.status(400).json({ error: 'Product name and price are required.' });
   }
@@ -155,7 +148,7 @@ app.post('/api/products', (req, res) => {
   });
 });
 
-// DELETE request to remove a product by ID
+
 app.delete('/api/products/:id', (req, res) => {
   const productId = req.params.id;
 
@@ -176,7 +169,7 @@ app.delete('/api/products/:id', (req, res) => {
   });
 });
 
-// Start the server
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
